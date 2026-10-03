@@ -1,0 +1,1020 @@
+<title>团团 · 神ノ殿堂</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700;900&display=swap">
+
+<style>
+/* ─── Design tokens ───────────────────────────────────────────────────
+   Layout: full-page cosmic canvas, tab-switched sections, glassmorphism
+   ──────────────────────────────────────────────────────────────────── */
+:root {
+  --bg-deep:    #06060f;
+  --bg-card:    rgba(20,16,48,0.72);
+  --bg-glass:   rgba(255,255,255,0.05);
+  --border:     rgba(255,255,255,0.08);
+
+  --violet:     #7c3aed;
+  --violet-l:   #a78bfa;
+  --pink:       #ec4899;
+  --pink-l:     #f9a8d4;
+  --cyan:       #06b6d4;
+  --cyan-l:     #67e8f9;
+  --gold:       #fbbf24;
+  --red:        #ef4444;
+
+  --fg:         #f0eeff;
+  --fg-2:       #b8b0d8;
+  --fg-3:       #6b6094;
+
+  --ff-display: 'Outfit', 'Noto Sans SC', sans-serif;
+  --ff-body:    'Noto Sans SC', 'Outfit', sans-serif;
+
+  --radius-lg:  1.25rem;
+  --radius-md:  .75rem;
+
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+body {
+  font-family: var(--ff-body);
+  background: var(--bg-deep);
+  color: var(--fg);
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+#stars-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ─── Nav / Tabs ─────────────────────────────────────────────────────── */
+.top-nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1.5rem;
+  background: rgba(6,6,15,.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: .02em;
+  color: var(--fg);
+  white-space: nowrap;
+}
+.brand .panda { font-size: 1.4rem }
+
+.tabs {
+  display: flex;
+  gap: .25rem;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: .45rem .9rem;
+  border-radius: 2rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg-2);
+  font-family: var(--ff-display);
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--fg); background: var(--bg-glass) }
+.tab-btn.active {
+  background: linear-gradient(135deg,var(--violet),var(--pink));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 18px rgba(124,58,237,.45);
+}
+
+/* ─── Sections ───────────────────────────────────────────────────────── */
+.section { display: none; position: relative; z-index: 1 }
+.section.active { display: block }
+
+/* ─── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  gap: 0;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,.22) 0%, transparent 70%);
+  pointer-events: none;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .8rem;
+  border: 1px solid rgba(124,58,237,.5);
+  border-radius: 2rem;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--violet-l);
+  background: rgba(124,58,237,.12);
+  margin-bottom: 2rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.hero-avatar {
+  font-size: clamp(4rem,10vw,7rem);
+  line-height: 1;
+  margin-bottom: 1.2rem;
+  filter: drop-shadow(0 0 40px rgba(236,72,153,.4));
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0) }
+  50% { transform: translateY(-14px) }
+}
+
+.hero-title {
+  font-family: var(--ff-display);
+  font-size: clamp(2.4rem,7vw,5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  text-wrap: balance;
+  background: linear-gradient(135deg, #fff 0%, var(--pink-l) 40%, var(--violet-l) 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: .5rem;
+}
+
+.hero-subtitle-en {
+  font-family: var(--ff-display);
+  font-size: clamp(.95rem,2.5vw,1.25rem);
+  color: var(--fg-2);
+  font-weight: 300;
+  letter-spacing: .04em;
+  margin-bottom: .3rem;
+}
+.hero-subtitle-zh {
+  font-size: clamp(.85rem,2vw,1rem);
+  color: var(--fg-3);
+  margin-bottom: 2.5rem;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: .8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.btn-invite {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .85rem 2rem;
+  border-radius: 2rem;
+  background: linear-gradient(135deg,var(--violet),var(--pink));
+  color: #fff;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 30px rgba(124,58,237,.5), 0 0 60px rgba(236,72,153,.2);
+  transition: all .2s;
+}
+.btn-invite:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(124,58,237,.65), 0 0 80px rgba(236,72,153,.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .85rem 1.8rem;
+  border-radius: 2rem;
+  background: var(--bg-glass);
+  color: var(--fg);
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all .2s;
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255,255,255,.18);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+}
+.stat-num {
+  font-family: var(--ff-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--cyan-l), var(--violet-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label { font-size: .75rem; color: var(--fg-3); letter-spacing: .04em }
+
+/* ─── Features grid ──────────────────────────────────────────────────── */
+.features-section {
+  padding: 3rem 1.5rem 5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.section-head h2 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.6rem,4vw,2.4rem);
+  font-weight: 800;
+  text-wrap: balance;
+}
+.section-head p {
+  color: var(--fg-2);
+  font-size: .9rem;
+  margin-top: .4rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+  gap: 1rem;
+}
+
+.feat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.2rem;
+  backdrop-filter: blur(20px);
+  transition: transform .2s, border-color .2s;
+}
+.feat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(124,58,237,.35);
+}
+
+.feat-icon {
+  font-size: 2rem;
+  margin-bottom: .8rem;
+  line-height: 1;
+}
+
+.feat-card h3 {
+  font-family: var(--ff-display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: .15rem;
+  color: var(--fg);
+}
+.feat-card .zh-label {
+  font-size: .8rem;
+  color: var(--fg-3);
+  margin-bottom: .6rem;
+}
+.feat-card p {
+  font-size: .82rem;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+/* ─── RULES SECTION ──────────────────────────────────────────────────── */
+.rules-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+.server-banner {
+  background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(236,72,153,.15));
+  border: 1px solid rgba(124,58,237,.3);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.server-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(124,58,237,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.server-banner h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.8rem,5vw,2.8rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--pink-l), var(--violet-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: .4rem;
+}
+.server-banner .tagline-en {
+  font-family: var(--ff-display);
+  font-size: 1rem;
+  color: var(--fg-2);
+  letter-spacing: .05em;
+}
+.server-banner .tagline-zh {
+  font-size: .9rem;
+  color: var(--fg-3);
+  margin-top: .2rem;
+}
+
+.rule-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(20px);
+}
+
+.rule-header {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: 1rem 1.2rem .8rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.025);
+}
+.rule-num {
+  width: 2rem; height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg,var(--violet),var(--pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-display);
+  font-size: .8rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.rule-header-text h3 {
+  font-family: var(--ff-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.2;
+}
+.rule-header-text span {
+  font-size: .8rem;
+  color: var(--fg-3);
+}
+
+.rule-body {
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.rule-line {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+}
+.rule-lang {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: .15rem .4rem;
+  border-radius: .3rem;
+  flex-shrink: 0;
+  margin-top: .1rem;
+}
+.lang-en { background: rgba(6,182,212,.18); color: var(--cyan-l) }
+.lang-zh { background: rgba(236,72,153,.18); color: var(--pink-l) }
+
+.rule-text { font-size: .875rem; color: var(--fg-2); line-height: 1.65 }
+.rule-text strong { color: var(--fg) }
+
+/* ─── Channels section ───────────────────────────────────────────────── */
+.channel-section { padding: 2rem 0 1rem }
+.channel-section h2 {
+  font-family: var(--ff-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--violet-l);
+}
+
+.channel-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: .8rem;
+  backdrop-filter: blur(20px);
+}
+.channel-group-name {
+  padding: .7rem 1.1rem;
+  font-family: var(--ff-display);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  background: rgba(255,255,255,.03);
+  border-bottom: 1px solid var(--border);
+}
+.channel-list { padding: .4rem 0 }
+.channel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .45rem 1.1rem;
+  font-size: .85rem;
+  color: var(--fg-2);
+  gap: .5rem;
+}
+.channel-item:hover { background: var(--bg-glass) }
+.channel-name { display: flex; align-items: center; gap: .45rem }
+.channel-zh { font-size: .75rem; color: var(--fg-3) }
+
+/* ─── Consequences table ─────────────────────────────────────────────── */
+.consequence-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: .6rem;
+  margin: 1rem 0;
+}
+@media (max-width:540px) { .consequence-grid { grid-template-columns: 1fr } }
+
+.cons-card {
+  border-radius: var(--radius-md);
+  padding: .9rem;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.cons-card.warn { background: rgba(251,191,36,.08); border-color: rgba(251,191,36,.25) }
+.cons-card.timeout { background: rgba(236,72,153,.08); border-color: rgba(236,72,153,.25) }
+.cons-card.ban { background: rgba(239,68,68,.08); border-color: rgba(239,68,68,.25) }
+.cons-card .icon { font-size: 1.6rem; margin-bottom: .4rem }
+.cons-card h4 { font-family: var(--ff-display); font-size: .9rem; font-weight: 700; margin-bottom: .2rem }
+.cons-card p { font-size: .75rem; color: var(--fg-2) }
+
+/* ─── ABOUT section ──────────────────────────────────────────────────── */
+.about-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+.roadmap-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.roadmap-item:last-child { border-bottom: none }
+.roadmap-dot {
+  width: .6rem; height: .6rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: .35rem;
+}
+.dot-done { background: #22c55e }
+.dot-wip { background: var(--gold) }
+.dot-plan { background: var(--fg-3) }
+
+.roadmap-content h4 { font-family: var(--ff-display); font-size: .95rem; font-weight: 700 }
+.roadmap-content p { font-size: .82rem; color: var(--fg-2); margin-top: .2rem; line-height: 1.6 }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* ─── Footer hint ────────────────────────────────────────────────────── */
+.footer-hint {
+  text-align: center;
+  font-size: .75rem;
+  color: var(--fg-3);
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width:480px) {
+  .hero-stats { gap: 1.5rem }
+  .top-nav { padding: .6rem 1rem }
+}
+</style>
+
+<canvas id="stars-canvas"></canvas>
+
+<nav class="top-nav">
+  <div class="brand">
+    <span class="panda">🐼</span>
+    <span>团团</span>
+    <span style="font-size:.65rem;font-weight:400;color:var(--fg-3);border:1px solid var(--border);border-radius:1rem;padding:.15rem .5rem">v0.0.1</span>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="home">🌌 Bot</button>
+    <button class="tab-btn" data-tab="rules">📜 神ノ殿堂</button>
+    <button class="tab-btn" data-tab="about">✨ About</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════ HOME TAB ══════════════════════════════ -->
+<div class="section active" id="tab-home">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge">🌟 Pre-Alpha · 公测前版本</div>
+    <div class="hero-avatar">🐼</div>
+    <h1 class="hero-title">团团</h1>
+    <p class="hero-subtitle-en">Your Cosmic Discord Companion</p>
+    <p class="hero-subtitle-zh">宇宙级 Discord 社区机器人</p>
+    <div class="hero-ctas">
+      <a class="btn-invite" href="https://discord.com/oauth2/authorize?client_id=1481640516931031050&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Ftuantuanbot-28647.web.app%2F&integration_type=0&scope=bot" target="_blank" rel="noopener">
+        🚀 Invite · 邀请团团
+      </a>
+      <button class="btn-secondary" onclick="switchTab('rules')">📜 Server Rules · 服务器规则</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">14+</span><span class="stat-label">Commands · 指令</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Languages · 语言</span></div>
+      <div class="stat"><span class="stat-num">40+</span><span class="stat-label">DB Models · 数据模型</span></div>
+    </div>
+  </div>
+
+  <div class="features-section">
+    <div class="section-head">
+      <h2>Everything Your Server Needs · 你的服务器一切所需</h2>
+      <p>A complete community platform, not just a bot</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">⭐</div>
+        <h3>XP & Levels</h3>
+        <div class="zh-label">经验值 & 等级</div>
+        <p>Chat to earn XP, level up, and climb the leaderboard with a smooth progression curve.<br><span style="color:var(--fg-3)">聊天赚取经验，升级排行。</span></p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💰</div>
+        <h3>Economy</h3>
+        <div class="zh-label">经济系统</div>
+        <p>Coins, Stardust, Event Tokens — atomic transactions, no negative balances.<br><span style="color:var(--fg-3)">金币、星尘、活动代币，安全原子交易。</span></p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎁</div>
+        <h3>Daily Rewards</h3>
+        <div class="zh-label">每日签到</div>
+        <p>Streak bonuses and milestone rewards keep you coming back every day.<br><span style="color:var(--fg-3)">连续签到奖励，每天都有惊喜。</span></p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎯</div>
+        <h3>Quests</h3>
+        <div class="zh-label">任务系统</div>
+        <p>Daily, weekly, seasonal challenges with unique rewards for every difficulty.<br><span style="color:var(--fg-3)">日常、每周、季节性挑战任务。</span></p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🏆</div>
+        <h3>Achievements</h3>
+        <div class="zh-label">成就系统</div>
+        <p>40+ unlockable achievements across exploration, economy, social, and mastery.<br><span style="color:var(--fg-3)">40+ 成就，全面记录你的旅程。</span></p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎮</div>
+        <h3>Mini-Games</h3>
+        <div class="zh-label">迷你游戏</div>
+        <p>Dice, Trivia, Number Guess — play and earn rewards directly in Discord.<br><span style="color:var(--fg-3)">骰子、问答、猜数字，边玩边赚。</span></p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🌐</div>
+        <h3>Multilingual</h3>
+        <div class="zh-label">多语言支持</div>
+        <p>English, Simplified Chinese, Malay — full fallback chain, no hardcoded strings.<br><span style="color:var(--fg-3)">英文、简体中文、马来文全支持。</span></p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🛡️</div>
+        <h3>Moderation</h3>
+        <div class="zh-label">服务器管理</div>
+        <p>Warn, timeout, ban — every action logged, auditable, and DM-notified.<br><span style="color:var(--fg-3)">警告、禁言、封禁，每项操作全程记录。</span></p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:3rem">
+      <a class="btn-invite" href="https://discord.com/oauth2/authorize?client_id=1481640516931031050&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Ftuantuanbot-28647.web.app%2F&integration_type=0&scope=bot" target="_blank" rel="noopener" style="font-size:1.1rem;padding:1rem 2.5rem">
+        🐼 Add 团团 to Your Server · 邀请团团进你的服务器
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ RULES TAB ══════════════════════════════ -->
+<div class="section" id="tab-rules">
+  <div class="rules-page">
+    <div class="server-banner">
+      <h1>神ノ殿堂</h1>
+      <p class="tagline-en">Realm of the Gods · A Community Ruled by Honor</p>
+      <p class="tagline-zh">众神之殿 · 荣誉之境，共创盛世</p>
+    </div>
+
+    <!-- Rules -->
+    <div class="section-head" style="text-align:left;margin-bottom:1.5rem">
+      <h2>📜 Server Rules · 服务器规则</h2>
+      <p>Bilingual · 双语版 · Read carefully before participating · 参与前请仔细阅读</p>
+    </div>
+
+    <div class="rule-block">
+      <div class="rule-header">
+        <div class="rule-num">1</div>
+        <div class="rule-header-text">
+          <h3>Respect Everyone · 尊重所有人</h3>
+          <span>Core conduct · 核心行为准则</span>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-line">
+          <span class="rule-lang lang-en">EN</span>
+          <p class="rule-text">Treat every member with <strong>respect and dignity</strong>, regardless of background, language, or opinion. Harassment, hate speech, discrimination, or personal attacks of any kind are strictly forbidden. Debate ideas — never attack the person.</p>
+        </div>
+        <div class="rule-line">
+          <span class="rule-lang lang-zh">中</span>
+          <p class="rule-text">请以<strong>尊重和礼貌</strong>对待每一位成员，无论其背景、语言或观点如何。严禁骚扰、仇恨言论、歧视或任何形式的人身攻击。可以讨论观点，但绝不攻击个人。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <div class="rule-header">
+        <div class="rule-num">2</div>
+        <div class="rule-header-text">
+          <h3>No Spam or Flooding · 禁止刷屏</h3>
+          <span>Chat quality · 聊天质量</span>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-line">
+          <span class="rule-lang lang-en">EN</span>
+          <p class="rule-text">Do not flood channels with repeated messages, excessive emojis, or meaningless content. <strong>No unsolicited advertising, server invites, or self-promotion</strong> without prior permission from a Staff member. Keep conversations on-topic per channel.</p>
+        </div>
+        <div class="rule-line">
+          <span class="rule-lang lang-zh">中</span>
+          <p class="rule-text">禁止在频道内刷屏、发送大量重复内容或无意义信息。<strong>未经管理员许可，禁止发布广告、服务器邀请或自我宣传内容。</strong>请在对应频道内保持话题相关性。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <div class="rule-header">
+        <div class="rule-num">3</div>
+        <div class="rule-header-text">
+          <h3>Safe Content Only · 仅限安全内容</h3>
+          <span>Content policy · 内容政策</span>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-line">
+          <span class="rule-lang lang-en">EN</span>
+          <p class="rule-text">Keep all content <strong>SFW (Safe for Work)</strong> in public channels. NSFW content, graphic violence, gore, or disturbing material is strictly prohibited. No doxxing, real personal information, or private data of any individual.</p>
+        </div>
+        <div class="rule-line">
+          <span class="rule-lang lang-zh">中</span>
+          <p class="rule-text">公共频道内请保持<strong>内容安全（适合所有年龄）</strong>。严禁发布成人内容、暴力血腥或令人不适的图片/视频。禁止人肉搜索、泄露他人真实个人信息或私人数据。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <div class="rule-header">
+        <div class="rule-num">4</div>
+        <div class="rule-header-text">
+          <h3>Language Use · 语言使用</h3>
+          <span>Communication · 交流规范</span>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-line">
+          <span class="rule-lang lang-en">EN</span>
+          <p class="rule-text">Use the <strong>correct channel for your language</strong>. English in <code>#english-only</code>, Chinese in <code>#chinese-only</code>. General channels support both. Mixing languages is fine in mixed channels — just be understandable.</p>
+        </div>
+        <div class="rule-line">
+          <span class="rule-lang lang-zh">中</span>
+          <p class="rule-text">请在<strong>对应语言频道</strong>内使用相应语言。英文专区请说英文，中文专区请说中文。综合频道支持双语，请保持内容可理解即可。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <div class="rule-header">
+        <div class="rule-num">5</div>
+        <div class="rule-header-text">
+          <h3>Bot Commands · 机器人指令</h3>
+          <span>Bot usage · 机器人使用</span>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-line">
+          <span class="rule-lang lang-en">EN</span>
+          <p class="rule-text">Use bot commands <strong>only in <code>#bot-commands</code></strong> unless specified otherwise. Do not spam bot commands. Attempting to exploit or abuse the bot will result in immediate suspension from bot access.</p>
+        </div>
+        <div class="rule-line">
+          <span class="rule-lang lang-zh">中</span>
+          <p class="rule-text">机器人指令请<strong>仅在 <code>#机器人指令</code> 频道</strong>使用（除非特别说明）。禁止刷机器人指令。尝试利用或滥用机器人将被立即暂停使用权限。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <div class="rule-header">
+        <div class="rule-num">6</div>
+        <div class="rule-header-text">
+          <h3>Follow Staff Decisions · 遵守管理员决定</h3>
+          <span>Authority · 权威</span>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-line">
+          <span class="rule-lang lang-en">EN</span>
+          <p class="rule-text">Staff decisions are final. <strong>Do not argue publicly</strong> with moderation actions — use a support ticket or DM a mod instead. Impersonating staff, evading punishment with alt accounts, or undermining server authority is a permanent ban offence.</p>
+        </div>
+        <div class="rule-line">
+          <span class="rule-lang lang-zh">中</span>
+          <p class="rule-text">管理员的决定具有最终效力。<strong>请勿在公开频道与管理行为争论</strong>——如有异议请开工单或私信管理员。冒充管理员、用小号逃避处罚或破坏服务器秩序，将被永久封禁。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <div class="rule-header">
+        <div class="rule-num">7</div>
+        <div class="rule-header-text">
+          <h3>Discord ToS · Discord 服务条款</h3>
+          <span>Platform rules · 平台规则</span>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-line">
+          <span class="rule-lang lang-en">EN</span>
+          <p class="rule-text">All members must comply with <strong>Discord's Terms of Service and Community Guidelines</strong>. This includes age requirements (13+), no account sharing, and no illegal activities.</p>
+        </div>
+        <div class="rule-line">
+          <span class="rule-lang lang-zh">中</span>
+          <p class="rule-text">所有成员必须遵守 <strong>Discord 服务条款及社区准则</strong>，包括年龄要求（13岁以上）、禁止共用账号以及禁止任何违法活动。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consequences -->
+    <hr class="divider">
+    <div class="section-head" style="text-align:left;margin-bottom:1rem">
+      <h2>⚖️ Consequences · 处罚阶梯</h2>
+      <p>Enforcement is proportional to severity · 处罚与违规严重程度相符</p>
+    </div>
+    <div class="consequence-grid">
+      <div class="cons-card warn">
+        <div class="icon">⚠️</div>
+        <h4>Warning · 警告</h4>
+        <p>Minor infractions, first offence<br>轻微违规，初犯</p>
+      </div>
+      <div class="cons-card timeout">
+        <div class="icon">⏱️</div>
+        <h4>Timeout · 禁言</h4>
+        <p>Repeated or moderate violations<br>重复或中度违规</p>
+      </div>
+      <div class="cons-card ban">
+        <div class="icon">🔨</div>
+        <h4>Ban · 封禁</h4>
+        <p>Severe or persistent violations<br>严重或持续违规</p>
+      </div>
+    </div>
+
+    <!-- Channel Structure -->
+    <hr class="divider">
+    <div class="channel-section">
+      <h2>📂 Channel Structure · 频道结构</h2>
+
+      <div class="channel-group">
+        <div class="channel-group-name">📢 Information · 信息</div>
+        <div class="channel-list">
+          <div class="channel-item"><div class="channel-name">📣 <span>#announcements</span></div><div class="channel-zh">公告</div></div>
+          <div class="channel-item"><div class="channel-name">📜 <span>#rules</span></div><div class="channel-zh">规则</div></div>
+          <div class="channel-item"><div class="channel-name">👋 <span>#welcome</span></div><div class="channel-zh">欢迎</div></div>
+          <div class="channel-item"><div class="channel-name">🔗 <span>#links</span></div><div class="channel-zh">链接 / 邀请</div></div>
+          <div class="channel-item"><div class="channel-name">📰 <span>#updates</span></div><div class="channel-zh">团团更新日志</div></div>
+        </div>
+      </div>
+
+      <div class="channel-group">
+        <div class="channel-group-name">💬 General Chat · 综合聊天</div>
+        <div class="channel-list">
+          <div class="channel-item"><div class="channel-name">💬 <span>#general</span></div><div class="channel-zh">综合聊天（双语）</div></div>
+          <div class="channel-item"><div class="channel-name">🌏 <span>#english-only</span></div><div class="channel-zh">英文专区</div></div>
+          <div class="channel-item"><div class="channel-name">🇨🇳 <span>#chinese-only</span></div><div class="channel-zh">中文专区</div></div>
+          <div class="channel-item"><div class="channel-name">🎨 <span>#media-share</span></div><div class="channel-zh">图片 / 视频 / 媒体</div></div>
+          <div class="channel-item"><div class="channel-name">💡 <span>#suggestions</span></div><div class="channel-zh">建议 / 意见</div></div>
+        </div>
+      </div>
+
+      <div class="channel-group">
+        <div class="channel-group-name">🤖 团团 Bot · 机器人</div>
+        <div class="channel-list">
+          <div class="channel-item"><div class="channel-name">🤖 <span>#bot-commands</span></div><div class="channel-zh">机器人指令</div></div>
+          <div class="channel-item"><div class="channel-name">🎮 <span>#games</span></div><div class="channel-zh">游戏区</div></div>
+          <div class="channel-item"><div class="channel-name">📊 <span>#leaderboard</span></div><div class="channel-zh">排行榜</div></div>
+        </div>
+      </div>
+
+      <div class="channel-group">
+        <div class="channel-group-name">🎵 Voice · 语音</div>
+        <div class="channel-list">
+          <div class="channel-item"><div class="channel-name">🔊 <span>General Voice</span></div><div class="channel-zh">综合语音</div></div>
+          <div class="channel-item"><div class="channel-name">🎵 <span>Music &amp; Chill</span></div><div class="channel-zh">音乐放松</div></div>
+          <div class="channel-item"><div class="channel-name">🎮 <span>Gaming Voice</span></div><div class="channel-zh">游戏语音</div></div>
+          <div class="channel-item"><div class="channel-name">📚 <span>Study Hall</span></div><div class="channel-zh">学习自习室</div></div>
+        </div>
+      </div>
+
+      <div class="channel-group">
+        <div class="channel-group-name">👑 Staff · 管理</div>
+        <div class="channel-list">
+          <div class="channel-item"><div class="channel-name">🔒 <span>#staff-lounge</span></div><div class="channel-zh">管理室（私密）</div></div>
+          <div class="channel-item"><div class="channel-name">📋 <span>#mod-log</span></div><div class="channel-zh">处罚记录</div></div>
+          <div class="channel-item"><div class="channel-name">🎫 <span>#tickets</span></div><div class="channel-zh">工单处理</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Invite CTA -->
+    <hr class="divider">
+    <div style="text-align:center;padding:1rem 0 2rem">
+      <p style="color:var(--fg-2);font-size:.9rem;margin-bottom:1.2rem">Powered by 团团 Bot · 由 团团 机器人驱动</p>
+      <a class="btn-invite" href="https://discord.com/oauth2/authorize?client_id=1481640516931031050&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Ftuantuanbot-28647.web.app%2F&integration_type=0&scope=bot" target="_blank" rel="noopener">
+        🐼 Invite 团团 · 邀请机器人
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ ABOUT TAB ══════════════════════════════ -->
+<div class="section" id="tab-about">
+  <div class="about-page">
+    <div class="section-head">
+      <h2>✨ About 团团 · 关于团团</h2>
+      <p>Honest version status and roadmap · 真实版本状态与路线图</p>
+    </div>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:2rem;backdrop-filter:blur(20px)">
+      <p style="font-size:.875rem;color:var(--fg-2);line-height:1.75">
+        <strong style="color:var(--violet-l)">EN:</strong> 团团 is a pre-alpha Discord community bot with a commercial-grade architecture. It runs on TypeScript, Discord.js v14, PostgreSQL, Redis, and BullMQ. The core infrastructure, XP system, economy, daily rewards, moderation, and mini-games are live. More features ship as development continues.
+        <br><br>
+        <strong style="color:var(--pink-l)">中：</strong>团团 是一个预发布版本的 Discord 社区机器人，采用商业级架构设计。基于 TypeScript、Discord.js v14、PostgreSQL、Redis 和 BullMQ 构建。核心基础设施、XP 系统、经济系统、每日签到、管理工具及迷你游戏均已上线，更多功能持续开发中。
+      </p>
+    </div>
+
+    <h3 style="font-family:var(--ff-display);font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:var(--fg-2)">Roadmap · 开发路线</h3>
+
+    <div class="rule-block" style="padding:0 1.2rem">
+      <div class="roadmap-item">
+        <div class="roadmap-dot dot-done"></div>
+        <div class="roadmap-content">
+          <h4>✅ v0.0.1 Foundation · 基础架构</h4>
+          <p>TypeScript strict, XP/levels, economy, daily/streak, dice/trivia/guess games, moderation (warn/timeout/ban), multilingual engine, Prisma schema (40+ models), Docker + CI/CD</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot dot-wip"></div>
+        <div class="roadmap-content">
+          <h4>🔶 v0.1.0 Quest & Achievement Engine · 任务与成就</h4>
+          <p>Quest progress tracking, achievement auto-unlock, title equip, shop (/shop command), inventory system</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot dot-plan"></div>
+        <div class="roadmap-content">
+          <h4>📋 v0.2.0 Events & Observer · 活动与观测者系统</h4>
+          <p>Seasonal festivals, world boss events, easter egg discovery engine, mysterious Observer progression</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot dot-plan"></div>
+        <div class="roadmap-content">
+          <h4>📋 v0.3.0 Premium & Web Dashboard · 高级版 & 控制台</h4>
+          <p>Premium tiers, cosmetic shop, owner web console, advanced analytics, birthday system</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div style="text-align:center">
+      <p style="font-size:.85rem;color:var(--fg-3);margin-bottom:1rem">Open source · 开源项目</p>
+      <a class="btn-secondary" href="https://github.com/MoRan3421/tuantuan-bot" target="_blank" rel="noopener">⭐ GitHub: MoRan3421/tuantuan-bot</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer-hint">🐼 团团 v0.0.1 Pre-Alpha · 神ノ殿堂 · Powered by Discord.js v14 + TypeScript</div>
+
+<script>
+// Stars
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initStars(n) {
+  stars = Array.from({length: n}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.4 + 0.2,
+    o: Math.random() * 0.7 + 0.1,
+    s: Math.random() * 0.3 + 0.05
+  }));
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (const s of stars) {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(200,190,255,${s.o})`;
+    ctx.fill();
+    s.o += s.s * (Math.random() > 0.5 ? 1 : -1);
+    if (s.o > 0.85) s.s = -Math.abs(s.s);
+    if (s.o < 0.08) s.s = Math.abs(s.s);
+  }
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+initStars(180);
+drawStars();
+window.addEventListener('resize', () => { resize(); initStars(180); });
+
+// Tabs
+function switchTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+</script>
