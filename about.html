@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>About 团团 — Roadmap & Story</title>
+<meta name="description" content="The story behind 团团 bot, current version status, and the full development roadmap.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700;900&display=swap">
+<style>
+:root{
+  --bg-deep:#06060f;--bg-card:rgba(20,16,48,.72);--bg-glass:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.08);--violet:#7c3aed;--violet-l:#a78bfa;
+  --pink:#ec4899;--pink-l:#f9a8d4;--cyan:#06b6d4;--cyan-l:#67e8f9;
+  --gold:#fbbf24;--fg:#f0eeff;--fg-2:#b8b0d8;--fg-3:#6b6094;
+  --ff-d:'Outfit','Noto Sans SC',sans-serif;--ff-b:'Noto Sans SC','Outfit',sans-serif;
+  --r-lg:1.25rem;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff-b);background:var(--bg-deep);color:var(--fg);min-height:100%;overflow-x:hidden}
+#stars-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.top-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.5rem;background:rgba(6,6,15,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);gap:1rem;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--ff-d);font-weight:700;font-size:1.1rem;color:var(--fg);text-decoration:none;white-space:nowrap}
+.brand .panda{font-size:1.5rem}
+.nav-links{display:flex;gap:.25rem;flex-wrap:wrap}
+.nav-link{padding:.45rem .9rem;border-radius:2rem;border:1px solid transparent;background:transparent;color:var(--fg-2);font-family:var(--ff-d);font-size:.82rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:all .2s}
+.nav-link:hover{color:var(--fg);background:var(--bg-glass)}
+.nav-link.active{background:linear-gradient(135deg,var(--violet),var(--pink));color:#fff;box-shadow:0 0 18px rgba(124,58,237,.45)}
+.page{max-width:800px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1}
+.section-head{text-align:center;margin-bottom:2.5rem}
+.section-head h2{font-family:var(--ff-d);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;text-wrap:balance}
+.section-head p{color:var(--fg-2);font-size:.9rem;margin-top:.4rem}
+.glass-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;backdrop-filter:blur(20px);margin-bottom:1.5rem}
+.about-body{font-size:.875rem;color:var(--fg-2);line-height:1.8}
+.about-body strong{color:var(--fg)}
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.7rem;margin-top:1.2rem}
+.stack-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:.75rem;padding:.7rem 1rem;font-size:.82rem;color:var(--fg-2);display:flex;align-items:center;gap:.5rem}
+.stack-item .dot{width:.5rem;height:.5rem;border-radius:50%;flex-shrink:0}
+.dot-violet{background:var(--violet-l)}
+.dot-pink{background:var(--pink-l)}
+.dot-cyan{background:var(--cyan-l)}
+.dot-gold{background:var(--gold)}
+.roadmap-list{display:flex;flex-direction:column;gap:0}
+.roadmap-item{display:flex;gap:1.2rem;padding:1.2rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.roadmap-item:last-child{border-bottom:none}
+.roadmap-line{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;width:1rem}
+.roadmap-dot{width:.75rem;height:.75rem;border-radius:50%;flex-shrink:0}
+.dot-done{background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.5)}
+.dot-wip{background:var(--gold);box-shadow:0 0 8px rgba(251,191,36,.4)}
+.dot-plan{background:var(--fg-3)}
+.roadmap-content h4{font-family:var(--ff-d);font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.roadmap-content p{font-size:.82rem;color:var(--fg-2);line-height:1.65}
+.roadmap-tag{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.06em;padding:.15rem .5rem;border-radius:1rem;margin-bottom:.4rem;text-transform:uppercase}
+.tag-done{background:rgba(34,197,94,.15);color:#86efac}
+.tag-wip{background:rgba(251,191,36,.15);color:#fde68a}
+.tag-plan{background:rgba(107,96,148,.2);color:var(--fg-3)}
+.commercial-section{margin:2.5rem 0}
+.commercial-section h3{font-family:var(--ff-d);font-size:1.2rem;font-weight:700;margin-bottom:1rem;color:var(--violet-l)}
+.monetize-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem}
+.monetize-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.1rem;backdrop-filter:blur(20px)}
+.monetize-card .m-icon{font-size:1.6rem;margin-bottom:.5rem}
+.monetize-card h4{font-family:var(--ff-d);font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.monetize-card p{font-size:.78rem;color:var(--fg-2);line-height:1.6}
+.divider{border:none;border-top:1px solid var(--border);margin:2rem 0}
+.btn-secondary{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 1.8rem;border-radius:2rem;background:var(--bg-glass);color:var(--fg);font-family:var(--ff-d);font-weight:600;font-size:1rem;text-decoration:none;border:1px solid var(--border);backdrop-filter:blur(10px);transition:all .2s}
+.btn-secondary:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
+.site-footer{padding:2rem 1.5rem;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.footer-brand{font-family:var(--ff-d);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:.5rem}
+.footer-links{display:flex;gap:1.2rem;flex-wrap:wrap}
+.footer-links a{color:var(--fg-3);text-decoration:none;font-size:.82rem;transition:color .2s}
+.footer-links a:hover{color:var(--fg-2)}
+.footer-copy{font-size:.75rem;color:var(--fg-3)}
+@media(max-width:480px){.top-nav{padding:.6rem 1rem}}
+</style>
+</head>
+<body>
+<canvas id="stars-canvas"></canvas>
+
+<nav class="top-nav">
+  <a class="brand" href="/"><span class="panda">🐼</span><span>团团</span><span style="font-size:.62rem;font-weight:400;color:var(--fg-3);border:1px solid var(--border);border-radius:1rem;padding:.12rem .5rem">v0.0.1</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="/">🌌 Bot</a>
+    <a class="nav-link" href="/rules">📜 神ノ殿堂</a>
+    <a class="nav-link active" href="/about">✨ About</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="section-head">
+    <h2>✨ About 团团 · 关于团团</h2>
+    <p>Honest version status, tech stack, commercial roadmap · 真实版本状态、技术栈与商业路线图</p>
+  </div>
+
+  <!-- Story -->
+  <div class="glass-card">
+    <div class="about-body">
+      <strong style="color:var(--violet-l)">EN —</strong> 团团 is a pre-alpha Discord community bot built with a commercial-grade architecture from day one. The goal is simple: become the best, most feature-rich bot for multilingual communities in Southeast Asia and beyond — with proper monetization, a web dashboard, and a self-sustaining ecosystem.
+      <br><br>
+      <strong style="color:var(--pink-l)">中 —</strong> 团团 是一款预发布版 Discord 社区机器人，从第一天起就以商业级架构设计。目标很简单：成为东南亚及全球多语言社区中功能最强、最完善的机器人——配备完整的变现系统、网页控制台，以及自我持续发展的生态体系。
+    </div>
+    <div class="stack-grid">
+      <div class="stack-item"><div class="dot dot-violet"></div>TypeScript strict</div>
+      <div class="stack-item"><div class="dot dot-violet"></div>Discord.js v14</div>
+      <div class="stack-item"><div class="dot dot-cyan"></div>PostgreSQL 16</div>
+      <div class="stack-item"><div class="dot dot-cyan"></div>Redis 7 + BullMQ</div>
+      <div class="stack-item"><div class="dot dot-pink"></div>Prisma ORM</div>
+      <div class="stack-item"><div class="dot dot-pink"></div>40+ DB models</div>
+      <div class="stack-item"><div class="dot dot-gold"></div>Node.js 20 LTS</div>
+      <div class="stack-item"><div class="dot dot-gold"></div>Fly.io hosting</div>
+    </div>
+  </div>
+
+  <!-- Commercialization -->
+  <div class="commercial-section">
+    <h3>💼 Commercialization Plan · 商业化计划</h3>
+    <div class="monetize-grid">
+      <div class="monetize-card">
+        <div class="m-icon">💳</div>
+        <h4>Server Subscriptions</h4>
+        <p>Monthly premium plans per server. Stripe integration for USD / crypto payments.<br><span style="color:var(--fg-3)">按服务器收月费，Stripe 集成。</span></p>
+      </div>
+      <div class="monetize-card">
+        <div class="m-icon">🌟</div>
+        <h4>Cosmetic Shop</h4>
+        <p>Role badges, profile frames, custom title cards sold with in-bot currency or real money.<br><span style="color:var(--fg-3)">角色徽章、称号卡，游戏内货币或真实消费。</span></p>
+      </div>
+      <div class="monetize-card">
+        <div class="m-icon">🏪</div>
+        <h4>Server Marketplace</h4>
+        <p>Server admins list items; members buy with earned coins. Platform takes a small cut.<br><span style="color:var(--fg-3)">管理员上架物品，平台抽成。</span></p>
+      </div>
+      <div class="monetize-card">
+        <div class="m-icon">📊</div>
+        <h4>Analytics Dashboard</h4>
+        <p>Web portal for server owners: activity graphs, member growth, retention metrics.<br><span style="color:var(--fg-3)">网页控制台，活跃度分析，留存数据。</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <h3 style="font-family:var(--ff-d);font-size:1.1rem;font-weight:700;color:var(--fg-2);margin-bottom:1rem">🗺️ Development Roadmap · 开发路线图</h3>
+  <div class="glass-card" style="padding:.5rem 1.2rem">
+    <div class="roadmap-list">
+      <div class="roadmap-item">
+        <div class="roadmap-line"><div class="roadmap-dot dot-done"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-tag tag-done">✅ LIVE</div>
+          <h4>v0.0.1 — Foundation · 基础架构</h4>
+          <p>TypeScript strict, XP/levels, economy (coins), daily/streak check-in, dice/trivia/guess mini-games, moderation (warn/timeout/ban), multilingual engine, Prisma schema (40+ models), Docker, CI/CD skeleton</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-line"><div class="roadmap-dot dot-wip"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-tag tag-wip">🔶 IN PROGRESS</div>
+          <h4>v0.1.0 — Quest &amp; Achievement Engine · 任务与成就引擎</h4>
+          <p>Quest progress tracking, achievement auto-unlock, title equip system, <code>/shop</code> command, inventory management, stardust currency introduction</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-line"><div class="roadmap-dot dot-plan"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-tag tag-plan">📋 PLANNED</div>
+          <h4>v0.2.0 — Events &amp; Observer System · 活动与观测者系统</h4>
+          <p>Seasonal festivals, world boss events, easter egg discovery engine, mysterious Observer character arc, event tokens economy</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-line"><div class="roadmap-dot dot-plan"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-tag tag-plan">📋 PLANNED</div>
+          <h4>v0.3.0 — Premium &amp; Web Dashboard · 高级版与控制台</h4>
+          <p><strong>Stripe payment integration</strong>, premium server subscriptions, cosmetic shop, owner web dashboard, advanced analytics, birthday system</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-line"><div class="roadmap-dot dot-plan"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-tag tag-plan">📋 PLANNED</div>
+          <h4>v0.4.0 — Marketplace &amp; AI Features · 市场与 AI 功能</h4>
+          <p>Server item marketplace, AI-powered moderation assist, smart XP anomaly detection, optional ChatGPT/Claude integration for custom commands</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div style="text-align:center">
+    <p style="font-size:.85rem;color:var(--fg-3);margin-bottom:1rem">Open source · 开源项目 · MIT License</p>
+    <a class="btn-secondary" href="https://github.com/MoRan3421/tuantuan-bot" target="_blank" rel="noopener">⭐ GitHub: MoRan3421/tuantuan-bot</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-brand"><span>🐼</span> 团团</div>
+  <div class="footer-links">
+    <a href="/">Bot</a>
+    <a href="/rules">神ノ殿堂</a>
+    <a href="/about">About</a>
+    <a href="https://github.com/MoRan3421/tuantuan-bot" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="footer-copy">© 2026 团团 · v0.0.1 Pre-Alpha · Discord.js v14 + TypeScript</div>
+</footer>
+
+<script>
+const cv=document.getElementById('stars-canvas'),cx=cv.getContext('2d');let st=[];
+function rs(){cv.width=innerWidth;cv.height=innerHeight}
+function is(n){st=Array.from({length:n},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.4+.2,o:Math.random()*.7+.1,s:Math.random()*.3+.05}))}
+function ds(){cx.clearRect(0,0,cv.width,cv.height);for(const s of st){cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(200,190,255,${s.o})`;cx.fill();s.o+=s.s*(Math.random()>.5?1:-1);if(s.o>.85)s.s=-Math.abs(s.s);if(s.o<.08)s.s=Math.abs(s.s)}requestAnimationFrame(ds)}
+rs();is(140);ds();addEventListener('resize',()=>{rs();is(140)});
+</script>
+</body>
+</html>
